@@ -10,7 +10,8 @@ Type BubbleSort(Type arr[], unsigned int size) {
     Type counter = 0;
     for (int i = 0; i < size - 1; i++) {
         for (int j = 1; j < size - i; j++) {
-            if (++counter && arr[j] < arr[j - 1]) {
+            if (arr[j] < arr[j - 1]) {
+                counter++;
                 swap(arr[j], arr[j - 1]);
                 flag = true;
             }
@@ -22,10 +23,9 @@ Type BubbleSort(Type arr[], unsigned int size) {
 
 
 template<typename Type>
-Type selectionSort(vector<Type> &arr, unsigned int size) {
+Type selectionSort(Type arr[], unsigned int size) {
     int min;
     Type counter = 0;
-    bool isSwapped = false;
     int min_index;
     for (int j = 1; j < size; j++) {
         min = arr[j - 1];
@@ -43,11 +43,8 @@ Type selectionSort(vector<Type> &arr, unsigned int size) {
         if (min_index != j - 1) {
             counter++;
             swap(arr[j - 1], arr[min_index]);
-            isSwapped = true;
         }
     }
-
-
     return counter;
 }
 
@@ -61,24 +58,31 @@ Type InsSort(Type arr[], unsigned int size) {
         k = 2;
     }
     for (int i = k; i < size; i++) {
-        if (++counter && arr[i] < arr[i - 1]) {
+        if (arr[i] < arr[i - 1]) {
+            counter++;
             temp = arr[i];
             arr[i] = arr[i - 1];
             int j = i - 2;
-            while (++counter && arr[j] > temp) {
+            while (arr[j] > temp) {
+                counter++;
                 arr[j + 1] = arr[j];
-                if (j != 0) j--;
-                else break;
+                if (j != 0) {
+                    counter++;
+                    j--;
+                } else break;
             }
-            arr[j] = temp;
+            if (arr[j] < temp) arr[j + 1] = temp;
+            else arr[j] = temp;
+            counter++;
         }
     }
     return counter;
 }
 
+
 int main() {
 
-    /*float Array_Permutations[120][5] = {
+    float Array_Permutations[120][5] = {
             {5, 4, 3, 2, 1},
             {5, 4, 3, 1, 2},
             {5, 4, 2, 3, 1},
@@ -445,7 +449,130 @@ int main() {
             {1, 2, 3, 5, 4},
             {1, 2, 3, 4, 5}
     };
-    // Bubble Sort
+    float orgArray_Permutations[120][5] = {
+            {5, 4, 3, 2, 1},
+            {5, 4, 3, 1, 2},
+            {5, 4, 2, 3, 1},
+            {5, 4, 2, 1, 3},
+            {5, 4, 1, 3, 2},
+            {5, 4, 1, 2, 3},
+            {5, 3, 4, 2, 1},
+            {5, 3, 4, 1, 2},
+            {5, 3, 2, 4, 1},
+            {5, 3, 2, 1, 4},
+            {5, 3, 1, 4, 2},
+            {5, 3, 1, 2, 4},
+            {5, 2, 4, 3, 1},
+            {5, 2, 4, 1, 3},
+            {5, 2, 3, 4, 1},
+            {5, 2, 3, 1, 4},
+            {5, 2, 1, 4, 3},
+            {5, 2, 1, 3, 4},
+            {5, 1, 4, 3, 2},
+            {5, 1, 4, 2, 3},
+            {5, 1, 3, 4, 2},
+            {5, 1, 3, 2, 4},
+            {5, 1, 2, 4, 3},
+            {5, 1, 2, 3, 4},
+            {4, 5, 3, 2, 1},
+            {4, 5, 3, 1, 2},
+            {4, 5, 2, 3, 1},
+            {4, 5, 2, 1, 3},
+            {4, 5, 1, 3, 2},
+            {4, 5, 1, 2, 3},
+            {4, 3, 5, 2, 1},
+            {4, 3, 5, 1, 2},
+            {4, 3, 2, 5, 1},
+            {4, 3, 2, 1, 5},
+            {4, 3, 1, 5, 2},
+            {4, 3, 1, 2, 5},
+            {4, 2, 5, 3, 1},
+            {4, 2, 5, 1, 3},
+            {4, 2, 3, 5, 1},
+            {4, 2, 3, 1, 5},
+            {4, 2, 1, 5, 3},
+            {4, 2, 1, 3, 5},
+            {4, 1, 5, 3, 2},
+            {4, 1, 5, 2, 3},
+            {4, 1, 3, 5, 2},
+            {4, 1, 3, 2, 5},
+            {4, 1, 2, 5, 3},
+            {4, 1, 2, 3, 5},
+            {3, 5, 4, 2, 1},
+            {3, 5, 4, 1, 2},
+            {3, 5, 2, 4, 1},
+            {3, 5, 2, 1, 4},
+            {3, 5, 1, 4, 2},
+            {3, 5, 1, 2, 4},
+            {3, 4, 5, 2, 1},
+            {3, 4, 5, 1, 2},
+            {3, 4, 2, 5, 1},
+            {3, 4, 2, 1, 5},
+            {3, 4, 1, 5, 2},
+            {3, 4, 1, 2, 5},
+            {3, 2, 5, 4, 1},
+            {3, 2, 5, 1, 4},
+            {3, 2, 4, 5, 1},
+            {3, 2, 4, 1, 5},
+            {3, 2, 1, 5, 4},
+            {3, 2, 1, 4, 5},
+            {3, 1, 5, 4, 2},
+            {3, 1, 5, 2, 4},
+            {3, 1, 4, 5, 2},
+            {3, 1, 4, 2, 5},
+            {3, 1, 2, 5, 4},
+            {3, 1, 2, 4, 5},
+            {2, 5, 4, 3, 1},
+            {2, 5, 4, 1, 3},
+            {2, 5, 3, 4, 1},
+            {2, 5, 3, 1, 4},
+            {2, 5, 1, 4, 3},
+            {2, 5, 1, 3, 4},
+            {2, 4, 5, 3, 1},
+            {2, 4, 5, 1, 3},
+            {2, 4, 3, 5, 1},
+            {2, 4, 3, 1, 5},
+            {2, 4, 1, 5, 3},
+            {2, 4, 1, 3, 5},
+            {2, 3, 5, 4, 1},
+            {2, 3, 5, 1, 4},
+            {2, 3, 4, 5, 1},
+            {2, 3, 4, 1, 5},
+            {2, 3, 1, 5, 4},
+            {2, 3, 1, 4, 5},
+            {2, 1, 5, 4, 3},
+            {2, 1, 5, 3, 4},
+            {2, 1, 4, 5, 3},
+            {2, 1, 4, 3, 5},
+            {2, 1, 3, 5, 4},
+            {2, 1, 3, 4, 5},
+            {1, 5, 4, 3, 2},
+            {1, 5, 4, 2, 3},
+            {1, 5, 3, 4, 2},
+            {1, 5, 3, 2, 4},
+            {1, 5, 2, 4, 3},
+            {1, 5, 2, 3, 4},
+            {1, 4, 5, 3, 2},
+            {1, 4, 5, 2, 3},
+            {1, 4, 3, 5, 2},
+            {1, 4, 3, 2, 5},
+            {1, 4, 2, 5, 3},
+            {1, 4, 2, 3, 5},
+            {1, 3, 5, 4, 2},
+            {1, 3, 5, 2, 4},
+            {1, 3, 4, 5, 2},
+            {1, 3, 4, 2, 5},
+            {1, 3, 2, 5, 4},
+            {1, 3, 2, 4, 5},
+            {1, 2, 5, 4, 3},
+            {1, 2, 5, 3, 4},
+            {1, 2, 4, 5, 3},
+            {1, 2, 4, 3, 5},
+            {1, 2, 3, 5, 4},
+            {1, 2, 3, 4, 5}
+    };
+
+
     vector<float> oprBubSort;
     vector<float> oprSelSort;
     vector<float> oprInsSort;
@@ -456,8 +583,7 @@ int main() {
         oprInsSort.push_back(InsSort(Array_Permutations_3[i], 5));
         cout << "Complexity_Bub[" << i << "]->" << oprBubSort[i]
              << "\t\t" << "Complexity_Sel[" << i << "]->" << oprSelSort[i]
-             << "\t\t" << "Complexity_Ins[" << i << "]->" << oprInsSort[i];
-        cout << endl;
+             << "\t\t" << "Complexity_Ins[" << i << "]->" << oprInsSort[i] << endl;
     }
 
     sort(oprBubSort.begin(), oprBubSort.end());
@@ -489,15 +615,18 @@ int main() {
 
          << "\nWorst cases\n" << "Bubble Sort: " << worst_cases[0]
          << "\tSelection Sort: " << worst_cases[1]
-         << "\tInsertion Sort: " << worst_cases[2];
-   cout << endl;*/
+         << "\tInsertion Sort: " << worst_cases[2] << endl;
 
-    /*for(int i = 0; i < 120; i++) {
+    for (int i = 0; i < 120; i++) {
         for (int j = 0; j < 5; j++) {
-            cout << Array_Permutations_2[i][j] << " ";
+            cout << Array_Permutations[i][j] << " ";
+        }
+        cout << "\t\t";
+        for (int j = 0; j < 5; j++) {
+            cout << orgArray_Permutations[i][j] << " ";
         }
         cout << endl;
-    }*/
+    }
 
     return 0;
 }
