@@ -42,28 +42,22 @@ Type selectionSort(Type arr[], unsigned int size) {
 }
 
 template<typename Type>
-Type InsSort(vector<Type> &arr) {
+Type InsSort(Type arr[], unsigned int size) {
     Type temp;
     int counter = 0;
-    // 2 3 1 5 4
-    // 5 4 3 2 1
-    // 4 5 3 2 1
-    // 0.5 1.5 2 3 3 5 4 temp = 1
     int k = 1;
-    if(++counter && arr[1] < arr[0]) {
+    if (++counter && arr[1] < arr[0]) {
         swap(arr[1], arr[0]);
         k = 2;
     }
-
-    for (int i = k; i < arr.size(); i++) {
-
+    for (int i = k; i < size; i++) {
         if (++counter && arr[i] < arr[i - 1]) {
             temp = arr[i];
             arr[i] = arr[i - 1];
             int j = i - 2;
             while (++counter && arr[j] > temp) {
                 arr[j + 1] = arr[j];
-                if(j != 0) j--;
+                if (j != 0) j--;
                 else break;
             }
             arr[j] = temp;
@@ -74,7 +68,7 @@ Type InsSort(vector<Type> &arr) {
 
 int main() {
 
-    /* float Array_Permutations[120][5] = {
+     /*float Array_Permutations[120][5] = {
              {5, 4, 3, 2, 1},
              {5, 4, 3, 1, 2},
              {5, 4, 2, 3, 1},
@@ -485,15 +479,20 @@ int main() {
 
           << "\nWorst cases\n" << "Bubble Sort: " << worst_cases[0]
           << "\tSelection Sort: " << worst_cases[1]
-          << "\tInsertion Sort: " << worst_cases[2];*/
+          << "\tInsertion Sort: " << worst_cases[2];
+    cout << endl;*/
 
-    vector<float> arr = {5, 4, 3, 2, 1};
-    cout << InsSort(arr) << endl;
+    /*for(int i = 0; i < 120; i++) {
+        for (int j = 0; j < 5; j++) {
+            cout << Array_Permutations_2[i][j] << " ";
+        }
+        cout << endl;
+    }*/
 
-    for (int i = 0; i < 5; i++) {
-        cout << arr[i] << " ";
-    }
+    float tst[5] = {1, 5, 4, 3, 2};
+    cout << selectionSort(tst, 5) << endl;
+
+    for(auto&i : tst) cout << i << " ";
     cout << endl;
-
     return 0;
 }
