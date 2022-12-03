@@ -42,23 +42,31 @@ Type selectionSort(Type arr[], unsigned int size) {
 }
 
 template<typename Type>
-Type InsSort(Type arr[], unsigned int size) {
+Type InsSort(vector<Type> &arr) {
     Type temp;
     int counter = 0;
-    for (int i = 1; i < size; i++) {
+    // 2 3 1 5 4
+    // 5 4 3 2 1
+    // 4 5 3 2 1
+    // 0.5 1.5 2 3 3 5 4 temp = 1
+    int k = 1;
+    if(++counter && arr[1] < arr[0]) {
+        swap(arr[1], arr[0]);
+        k = 2;
+    }
+
+    for (int i = k; i < arr.size(); i++) {
+
         if (++counter && arr[i] < arr[i - 1]) {
             temp = arr[i];
             arr[i] = arr[i - 1];
-            for (int j = i - 2; j > i; j--) {
-                if (++counter && temp < arr[j]) {
-                    arr[j + 1] = arr[j];
-                } else if (++counter && temp == arr[j]) {
-                    arr[j + 1] = temp;
-                } else if (++counter && temp > arr[j]) {
-                    arr[j + 1] = temp;
-                    break;
-                }
+            int j = i - 2;
+            while (++counter && arr[j] > temp) {
+                arr[j + 1] = arr[j];
+                if(j != 0) j--;
+                else break;
             }
+            arr[j] = temp;
         }
     }
     return counter;
@@ -479,12 +487,13 @@ int main() {
           << "\tSelection Sort: " << worst_cases[1]
           << "\tInsertion Sort: " << worst_cases[2];*/
 
-    float arr[5] = {5, 4, 3, 2, 1};
-    cout << InsSort(arr, 5) << endl;
+    vector<float> arr = {5, 4, 3, 2, 1};
+    cout << InsSort(arr) << endl;
 
-    for(int i = 0; i < 5; i++) {
+    for (int i = 0; i < 5; i++) {
         cout << arr[i] << " ";
     }
     cout << endl;
+
     return 0;
 }
